@@ -31,16 +31,14 @@ def build_payload(site):
     # translations
     files = list_files(site, "/")
 
-    obj = { "Paths": {
-             "Quantity": len(files), 
-             "Items": [ f for f in files] },
-             "CallerReference": "travis-" + pretty_time() }
-    return obj
+    return {
+        "Paths": {"Quantity": len(files), "Items": list(files)},
+        "CallerReference": f"travis-{pretty_time()}",
+    }
 
 def write_output(obj, target):
-    f = open(target, "w")
-    json.dump(obj, f)
-    f.close()
+    with open(target, "w") as f:
+        json.dump(obj, f)
 
 def main():
     site = "_site"
